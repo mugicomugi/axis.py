@@ -1,0 +1,16 @@
+LICENSE
+README.md
+pyproject.toml
+axis/__init__.py
+axis/auth.py
+axis/client.py
+axis/exceptions.py
+axis/models.py
+axis/parser.py
+axis_prioris.egg-info/PKG-INFO
+axis_prioris.egg-info/SOURCES.txt
+axis_prioris.egg-info/dependency_links.txt
+axis_prioris.egg-info/requires.txt
+axis_prioris.egg-info/top_level.txt
+tests/test_auth.py
+tests/test_parser.py
