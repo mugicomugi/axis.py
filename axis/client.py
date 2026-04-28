@@ -128,7 +128,13 @@ class AxisClient:
 
     def _get_ws_url(self) -> str:
         servers = get_server_list(self._token)
-        return servers[0] + "/socket"
+        url = servers[0]
+        if not url.lower().startswith("wss://"):
+            raise AxisConnectionError(
+                f"Server returned non-secure WebSocket URL: {url!r}. "
+                "Only wss:// connections are allowed."
+            )
+        return url + "/socket"
 
     def _build_ws(self, url: str) -> websocket.WebSocketApp:
         return websocket.WebSocketApp(
@@ -247,7 +253,8 @@ class AxisClient:
         try:
             data = json.loads(message)
         except json.JSONDecodeError:
-            logger.warning("Non-JSON message received: %s", message[:100])
+            sanitized = message[:100].replace("\n", "\\n").replace("\r", "\\r")
+            logger.warning("Non-JSON message received: %s", sanitized)
             return
 
         # Check for connection limit error

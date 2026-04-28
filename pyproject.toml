@@ -25,6 +25,8 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+# NOTE: Run `pip-audit` regularly in CI to detect known vulnerabilities
+# in transitive dependencies.
 dependencies = [
     "websocket-client>=1.0.0",
     "requests>=2.25.0",

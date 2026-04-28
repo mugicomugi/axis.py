@@ -1,0 +1,60 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  padding-top: 40px !important;
+}
+
+.ui.menu .item img.logo {
+  margin-right: 1.5em;
+}
+
+.home h1 {
+  font-size: 4em;
+  font-weight: normal;
+  color: azure;
+}
+
+.home h2 {
+  font-size: 1.5em;
+  font-weight: normal;
+  color: azure;
+}
+
+.home p {
+  font-weight: normal;
+  color: azure;
+}
+
+.title.grid {
+  margin-top: 0 !important;
+  padding: 2em 0 !important;
+  background: linear-gradient(-135deg, #1A2980, #26D0CE);
+  color: azure;
+}
+
+.title h1.ui.header {
+  font-size: 2.3em;
+  font-weight: normal;
+  color: azure;
+}
+
+.main.container {
+  padding: 30px 15px 120px;
+}
+
+.wireframe {
+  margin-top: 2em;
+}
+
+.ui.footer.segment {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+p.break-word {
+  word-wrap: break-word !important;
+}

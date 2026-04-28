@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://axis.prioris.jp/docs/authentication/ -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="https://axis.prioris.jp/static/images/favicon.png">
+  <title>/docs/authentication | AXIS by Prioris</title>
+  <link rel="stylesheet" type="text/css" href="./_docs_authentication _ AXIS by Prioris_files/style.css">
+  <link rel="stylesheet" href="./_docs_authentication _ AXIS by Prioris_files/semantic.min.css">
+  <link rel="stylesheet" href="./_docs_authentication _ AXIS by Prioris_files/tomorrow.min.css">
+  <script src="./_docs_authentication _ AXIS by Prioris_files/jquery.min.js.ダウンロード"></script>
+  <script src="./_docs_authentication _ AXIS by Prioris_files/semantic.min.js.ダウンロード"></script>
+  
+  <script src="./_docs_authentication _ AXIS by Prioris_files/highlight.min.js.ダウンロード"></script>
+  <script src="./_docs_authentication _ AXIS by Prioris_files/python.min.js.ダウンロード"></script>
+  <script src="./_docs_authentication _ AXIS by Prioris_files/javascript.min.js.ダウンロード"></script>
+  <script src="./_docs_authentication _ AXIS by Prioris_files/json.min.js.ダウンロード"></script>
+  <script src="./_docs_authentication _ AXIS by Prioris_files/moment.min.js.ダウンロード"></script>
+  <script src="./_docs_authentication _ AXIS by Prioris_files/moment-timezone-with-data.min.js.ダウンロード"></script>
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  
+</head>
+
+<body>
+  <div class="ui fixed menu">
+      <a href="https://axis.prioris.jp/" class="header item">
+       AXIS
+      </a>
+      <a class="item" href="https://axis.prioris.jp/about/">About</a>
+      
+      <a class="item" href="https://axis.prioris.jp/accounts/profile/">Dashboard</a>
+      
+      <a class="item" href="https://axis.prioris.jp/manage/channel/">Channel</a>
+      <a class="item" href="https://axis.prioris.jp/manage/stream/">Stream</a>
+      
+      <a class="item" href="https://axis.prioris.jp/manage/token/">Access Token</a>
+      
+      <div class="ui simple dropdown item">
+        Documents<i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item">
+            <i class="dropdown icon"></i>
+            Stream
+            <div class="menu">
+              <a class="item" href="https://axis.prioris.jp/docs/stream/subscriber/">for Subscriber</a>
+              <a class="item" href="https://axis.prioris.jp/docs/stream/publisher/">for Publisher</a>
+            </div>
+          </div>
+          <div class="item">
+            <i class="dropdown icon"></i>
+            Message
+            <div class="menu">
+              <a class="item" href="https://axis.prioris.jp/docs/message/format/">Format</a>
+              <a class="item" href="https://axis.prioris.jp/docs/message/sample/">Sample</a>
+            </div>
+          </div>
+          <a class="item" href="https://axis.prioris.jp/docs/authentication/">Authentication</a>
+        </div>
+      </div>
+      <div class="right menu">
+        
+        <a class="item" href="https://axis.prioris.jp/accounts/logout/">Logout</a>
+        
+      </div>
+  </div>
+  
+  <div class="ui title fluid grid">
+    <h1 class="ui header container">Documents</h1>
+  </div>
+  <div class="ui main container">
+    <div class="ui breadcrumb">
+      <div class="section">Documents</div>
+      <i class="right angle icon divider"></i>
+      <div class="active section">Authentication</div>
+    </div>
+    
+    <h2 class="ui header">Authentication</h2>
+    <p>AXISでは認証の仕組みとしてアクセストークン(JWT, JSON Web Token)を採用しています。 <small>See also <a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON Web Token - Wikipedia(en)</a></small></p>
+    <p>AXISでは、JWTを採用することでAuthenticationサーバとWebSocketサーバを分離し、将来的な接続数増加に伴うWebSocketサーバの並列化、耐障害性の向上を実現可能としました。現在提供中の接続ポイントは1箇所(Tokyo)ですが、今後のサービス展開に伴って地理的分散配置を実施予定です。</p>
+    <p>アクセストークンにはBASE64でエンコードされたユーザ名、購読/配信チャンネル、トークンの有効期限などが含まれています。このトークンには署名が付随しているため、改ざんされたトークンはAXIS Socketサーバ接続時の検証でリジェクトされ、接続は切断されます。</p>
+    <p>アクセストークンは、AXIS Socketサーバに接続する際のheaderに <strong>Authorization: Bearer &lt;YOUR TOKEN&gt;</strong> の形式で記述して利用します。</p>
+    <div class="ui segment">
+      <pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/socket</span> HTTP/1.1
+<span class="hljs-attribute">Upgrade</span>: websocket
+<span class="hljs-attribute">Connection</span>: Upgrade
+<span class="hljs-attribute">Host</span>: ws.axis.prioris.jp
+<span class="hljs-attribute">Authorization</span>: Bearer &lt;YOUR TOKEN&gt;</code></pre>
+    </div>
+    <p>各プログラミング言語で利用できる ほとんどのWebSocketライブラリはheaderをオプションで指定することができるはずです。<br>PythonとNode.jsでのサンプルコードは <a href="https://axis.prioris.jp/docs/stream/subscriber/">Stream/for Subscriber</a> のページに記載されています。</p>
+    <div class="ui divider"></div>
+    <h3>トークンのリフレッシュ</h3>
+    <p>今月の残り日数が7日未満の場合、現行のトークンで翌月末までのトークンを発行するAPIが利用可能です。</p>
+    <div class="ui big icon message">
+      <i class="server icon"></i>
+      <div class="content">
+        <div class="header">Token Refresh API</div>
+        <p>https://axis.prioris.jp/api/token/refresh/</p>
+        <p>注意 : Publish/Subscribeのために接続するAXIS Socketサーバ(ws.axis.prioris.jp)とは異なります。</p>
+      </div>
+    </div>
+    <p>Token Refresh APIは、Headerに <strong>Authorization: Bearer &lt;YOUR TOKEN&gt;</strong> の形式でトークンを含めてアクセスすることでユーザ認証を行います。<br>
+      現行のトークンの有効期限が切れている場合、APIでのリフレッシュは出来ませんので、再度 <a class="item" href="https://axis.prioris.jp/manage/token/">アクセストークンの発行</a> をしてください。</p>
+    <div class="ui icon error message">
+      <i class="warning icon"></i>
+      <div class="content">
+        <div class="header"><h3>Token Refresh APIをポーリングしないでください</h3></div>
+        <p>Token Refresh APIに対して、毎秒、毎分といったポーリングによる頻繁なアクセスをするユーザーは発見次第アカウントの停止を行います。<br>
+          トークンの有効期限が7日以上の場合、Token Refresh APIにアクセスしないでください。</p>
+        <p></p>
+      </div>
+    </div>
+    <h4>翌月の契約が有効で、翌月末までのトークンが正常に発行された場合、APIは新しいトークンを返します。</h4>
+    <div class="ui segment">
+      <pre><code class="json hljs">{
+<span class="hljs-attr">"status"</span>: <span class="hljs-string">"generate a new token"</span>,
+<span class="hljs-attr">"token"</span>: <span class="hljs-string">"NEW TOKEN"</span>
+}</code></pre>
+    </div>
+    <h4>今月の残り日数が7日以上の場合、APIは現行のトークンを返します。</h4>
+    <div class="ui segment">
+      <pre><code class="json hljs">{
+<span class="hljs-attr">"status"</span>: <span class="hljs-string">"not due for refresh yet"</span>,
+<span class="hljs-attr">"token"</span>: <span class="hljs-string">"OLD TOKEN"</span>
+}</code></pre>
+    </div>
+    <h4>契約の有効期限が切れている場合、APIはステータスコード402を返します。</h4>
+    <div class="ui segment">
+      <pre><code class="json hljs">{
+<span class="hljs-attr">"status"</span>: <span class="hljs-string">"contract has expired"</span>
+}</code></pre>
+    </div>
+    <p>翌月の契約が無効の場合、今月の残り日数が7日未満でも今月末まで有効の現行トークンを返します。</p>
+    <div class="ui divider"></div>
+  </div>
+
+
+<script>hljs.initHighlightingOnLoad();</script>
+</body></html>

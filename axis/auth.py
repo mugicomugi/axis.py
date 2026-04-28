@@ -23,6 +23,14 @@ def decode_token_payload(token: str) -> Dict[str, Any]:
     """Decode the JWT payload without verifying the signature.
 
     This is used only for reading expiration and metadata locally.
+
+    .. warning::
+
+        The signature is **not** verified. Do **not** use the returned
+        payload for authentication or authorization decisions.  An
+        attacker can craft an arbitrary payload without possessing the
+        signing key.  This helper is intended solely for local
+        inspection of token metadata (e.g. expiration time).
     """
     parts = token.split(".")
     if len(parts) != 3:
