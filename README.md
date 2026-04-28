@@ -26,14 +26,6 @@
 pip install axis-prioris
 ```
 
-開発用:
-
-```bash
-git clone https://github.com/mugicomugi/axis.py.git
-cd axis.py
-pip install -e ".[dev]"
-```
-
 ## 使い方
 
 ### 基本
