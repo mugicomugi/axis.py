@@ -1,6 +1,7 @@
 # Environment
 .env
 .env.example
+.gitignore
 
 # Virtual environment
 .venv/
