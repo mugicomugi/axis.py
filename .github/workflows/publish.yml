@@ -25,6 +25,7 @@ jobs:
 
       - name: Verify tag matches pyproject version
         if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
         run: |
           TAG="${GITHUB_REF_NAME#v}"
           PROJ=$(python -c "import tomllib,pathlib;print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])")
@@ -32,6 +33,17 @@ jobs:
           echo "pyproject version:  $PROJ"
           if [ "$TAG" != "$PROJ" ]; then
             echo "::error::Tag ($TAG) does not match pyproject.toml version ($PROJ)"
+            exit 1
+          fi
+
+      - name: Refuse to publish a version already on PyPI
+        shell: bash
+        run: |
+          PROJ=$(python -c "import tomllib,pathlib;print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])")
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/axis-prioris/${PROJ}/json")
+          echo "PyPI status for ${PROJ}: $STATUS"
+          if [ "$STATUS" = "200" ]; then
+            echo "::error::axis-prioris ${PROJ} already exists on PyPI. Bump the version."
             exit 1
           fi
 
